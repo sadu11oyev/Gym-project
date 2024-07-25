@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.gymproject.dto.TraineeDto;
 import uz.pdp.gymproject.entity.Trainee;
-import uz.pdp.gymproject.entity.User;
 import uz.pdp.gymproject.model.request.TraineeReqDto;
 import uz.pdp.gymproject.model.response.TraineeResDto;
 import uz.pdp.gymproject.model.response.TraineeUpdateResDto;
@@ -46,7 +45,7 @@ public class TraineeController {
         );
     }
 
-    @PostMapping("delete")
+    @DeleteMapping("delete")
     public HttpEntity<?> deleteTrainee(@PathVariable String email){
         return ResponseEntity.ok(
                 Response.builder().message("Delete trainee").data(traineeService.deleteTrainee(email)).build()

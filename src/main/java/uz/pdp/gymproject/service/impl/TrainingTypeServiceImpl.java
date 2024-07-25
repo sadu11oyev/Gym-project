@@ -22,4 +22,10 @@ public class TrainingTypeServiceImpl implements TrainingTypeService {
         return ResponseEntity.status(200).body(trainingTypeDtos);
     }
 
+    @Override
+    public String save(TrainingTypeDto trainingTypeDto) {
+        TrainingType trainingType = trainingTypeMapper.toEntity(trainingTypeDto);
+        trainingTypeRepository.save(trainingType);
+        return trainingType.getName();
+    }
 }

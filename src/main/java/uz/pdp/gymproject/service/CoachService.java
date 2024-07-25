@@ -1,9 +1,11 @@
 package uz.pdp.gymproject.service;
 
+import org.springframework.http.HttpEntity;
 import uz.pdp.gymproject.dto.CoachDto;
-import uz.pdp.gymproject.entity.Coach;
 
 public interface CoachService {
 
-    Coach save(CoachDto coachDto);
+    String save(CoachDto coachDto);
+
+    HttpEntity<?> getCoachProfile(String email);
 }

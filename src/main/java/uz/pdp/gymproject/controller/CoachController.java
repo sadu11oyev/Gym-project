@@ -1,11 +1,12 @@
 package uz.pdp.gymproject.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.gymproject.dto.CoachDto;
 import uz.pdp.gymproject.dto.TrainingTypeDto;
-import uz.pdp.gymproject.entity.Coach;
+import uz.pdp.gymproject.response.Response;
 import uz.pdp.gymproject.service.CoachService;
 import uz.pdp.gymproject.service.TrainingTypeService;
 
@@ -18,13 +19,19 @@ public class CoachController {
     private final TrainingTypeService trainingTypeService;
     private final CoachService coachService;
 
+    @GetMapping()
+    public HttpEntity<?> getCoachProfile(@RequestParam String email){
+        return coachService.getCoachProfile(email);
+    }
     @GetMapping("register")
-    public ResponseEntity<List<TrainingTypeDto>> getRegisterPage(){
+    public HttpEntity<List<TrainingTypeDto>> getRegisterPage(){
         return trainingTypeService.getTrainingTypes();
     }
 
     @PostMapping("register")
-    public ResponseEntity<Coach> saveCoach(@RequestBody CoachDto coachDto){
-        return ResponseEntity.ok(coachService.save(coachDto));
+    public HttpEntity<?> saveCoach(@RequestBody CoachDto coachDto){
+        return ResponseEntity.ok(
+                Response.builder().message("Response").data(coachService.save(coachDto)).build()
+        );
     }
 }
