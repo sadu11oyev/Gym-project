@@ -15,7 +15,9 @@ import uz.pdp.gymproject.model.response.TraineeUpdateResDto;
 import uz.pdp.gymproject.repo.CoachRepository;
 import uz.pdp.gymproject.repo.TraineeRepository;
 import uz.pdp.gymproject.repo.UserRepository;
+import uz.pdp.gymproject.service.AuthService;
 import uz.pdp.gymproject.service.TraineeService;
+import uz.pdp.gymproject.service.UserService;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,8 +34,8 @@ public class TraineeServiceImpl implements TraineeService {
     @Override
     public ResponseEntity<Trainee> saveTrainee(TraineeDto traineeDto) {
         Trainee entity = traineeMapper.toEntity(traineeDto);
-        Trainee save =  traineeRepository.save(entity);
-        return ResponseEntity.status(200).body(save);
+        traineeRepository.save(entity);
+        return ResponseEntity.status(200).body(entity);
     }
 
     @Override
