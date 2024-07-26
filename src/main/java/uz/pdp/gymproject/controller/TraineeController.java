@@ -5,7 +5,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.gymproject.dto.TraineeDto;
-import uz.pdp.gymproject.entity.Trainee;
 import uz.pdp.gymproject.model.request.TraineeReqDto;
 import uz.pdp.gymproject.model.response.TraineeResDto;
 import uz.pdp.gymproject.model.response.TraineeUpdateResDto;
@@ -33,8 +32,10 @@ public class TraineeController {
     public HttpEntity<List<String>> getAddresses(){return ResponseEntity.ok(DATA.districtList);
     }
     @PostMapping("register")
-    public HttpEntity<Trainee> saveTrainee(@RequestBody TraineeDto traineeDto){
-        return traineeService.saveTrainee(traineeDto);
+    public HttpEntity<?> saveTrainee(@RequestBody TraineeDto traineeDto){
+        return ResponseEntity.ok(
+                Response.builder().message("Register Data").data(traineeService.saveTrainee(traineeDto)).build()
+        ) ;
     }
 
     @PostMapping("update")

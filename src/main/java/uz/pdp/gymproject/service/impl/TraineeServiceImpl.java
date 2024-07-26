@@ -1,7 +1,6 @@
 package uz.pdp.gymproject.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.pdp.gymproject.dto.TraineeDto;
 import uz.pdp.gymproject.entity.Coach;
@@ -17,7 +16,6 @@ import uz.pdp.gymproject.repo.TraineeRepository;
 import uz.pdp.gymproject.repo.UserRepository;
 import uz.pdp.gymproject.service.AuthService;
 import uz.pdp.gymproject.service.TraineeService;
-import uz.pdp.gymproject.service.UserService;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,12 +28,14 @@ public class TraineeServiceImpl implements TraineeService {
     private final TraineeRepository traineeRepository;
     private final UserRepository userRepository;
     private final CoachRepository coachRepository;
+    private final AuthService authService;
 
     @Override
-    public ResponseEntity<Trainee> saveTrainee(TraineeDto traineeDto) {
+    public String saveTrainee(TraineeDto traineeDto) {
+        authService.register(traineeDto.getRegisterDto());
         Trainee entity = traineeMapper.toEntity(traineeDto);
         traineeRepository.save(entity);
-        return ResponseEntity.status(200).body(entity);
+        return "Email: "+traineeDto.getRegisterDto().email()+" Password: "+traineeDto.getRegisterDto().password();
     }
 
     @Override
