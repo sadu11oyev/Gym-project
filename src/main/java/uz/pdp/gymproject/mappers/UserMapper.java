@@ -7,5 +7,5 @@ import uz.pdp.gymproject.entity.User;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserMapper {
-    User toEntity(UserDto userDto);
+
 }

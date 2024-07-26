@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.gymproject.dto.CoachDto;
 import uz.pdp.gymproject.dto.TrainingTypeDto;
+import uz.pdp.gymproject.model.response.dto.CoachResDto2;
 import uz.pdp.gymproject.response.Response;
 import uz.pdp.gymproject.service.CoachService;
 import uz.pdp.gymproject.service.TrainingTypeService;
@@ -21,7 +22,9 @@ public class CoachController {
 
     @GetMapping()
     public HttpEntity<?> getCoachProfile(@RequestParam String email){
-        return coachService.getCoachProfile(email);
+        return ResponseEntity.ok(
+                Response.builder().message("Coach profile: ").data(coachService.getCoachProfile(email)).build()
+        );
     }
     @GetMapping("register")
     public HttpEntity<List<TrainingTypeDto>> getRegisterPage(){

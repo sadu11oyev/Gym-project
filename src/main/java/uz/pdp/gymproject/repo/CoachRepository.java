@@ -15,4 +15,6 @@ public interface CoachRepository extends JpaRepository<Coach, UUID> {
 
     @Query(nativeQuery = true, value = "SELECT tt.name FROM coach c JOIN training_type tt ON c.training_type_id = tt.id WHERE c.id = :coachId")
     String findSpecializations(@Param("coachId") UUID coachId);
+
+    Coach findByUserId(UUID id);
 }
