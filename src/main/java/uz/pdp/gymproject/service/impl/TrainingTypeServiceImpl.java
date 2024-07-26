@@ -10,6 +10,9 @@ import uz.pdp.gymproject.repo.TrainingTypeRepository;
 import uz.pdp.gymproject.service.TrainingTypeService;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class TrainingTypeServiceImpl implements TrainingTypeService {
@@ -27,5 +30,20 @@ public class TrainingTypeServiceImpl implements TrainingTypeService {
         TrainingType trainingType = trainingTypeMapper.toEntity(trainingTypeDto);
         trainingTypeRepository.save(trainingType);
         return trainingType.getName();
+    }
+
+    @Override
+    public TrainingType getTrainingTypeIdByName(String specializations) {
+        Optional<TrainingType> opt = trainingTypeRepository.findByName(specializations);
+        if (opt.isPresent()){
+            return opt.get();
+        }else {
+            TrainingType newTrainingType = TrainingType.builder()
+                    .name(specializations)
+                    .build();
+            trainingTypeRepository.save(newTrainingType);
+            return newTrainingType;
+        }
+
     }
 }

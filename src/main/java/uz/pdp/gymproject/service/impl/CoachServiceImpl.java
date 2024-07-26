@@ -4,15 +4,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.pdp.gymproject.dto.CoachDto;
 import uz.pdp.gymproject.entity.Coach;
+import uz.pdp.gymproject.entity.TrainingType;
 import uz.pdp.gymproject.entity.User;
 import uz.pdp.gymproject.mappers.CoachMapper;
+import uz.pdp.gymproject.model.request.CoachUpdateReqDto;
 import uz.pdp.gymproject.model.response.CoachResDto;
 import uz.pdp.gymproject.model.response.dto.CoachResDto2;
 import uz.pdp.gymproject.model.response.dto.TraineeRes;
 import uz.pdp.gymproject.repo.*;
 import uz.pdp.gymproject.service.AuthService;
 import uz.pdp.gymproject.service.CoachService;
-import uz.pdp.gymproject.service.TraineeService;
 import uz.pdp.gymproject.service.TrainingTypeService;
 
 import java.util.List;
@@ -27,8 +28,6 @@ public class CoachServiceImpl implements CoachService {
     private final TrainingTypeService trainingTypeService;
     private final UserRepository userRepository;
     private final TrainingTypeRepository trainingTypeRepository;
-    private final TraineeRepository traineeRepository;
-    private final TraineeService traineeService;
     private final TraineeCoachRepository traineeCoachRepository;
 
     @Override
@@ -64,5 +63,19 @@ public class CoachServiceImpl implements CoachService {
                 .coachResDto(coachResDto)
                 .traineeRes(traineeResList)
                 .build();
+    }
+
+    @Override
+    public CoachResDto2 updateCoach(CoachUpdateReqDto coachUpdateReqDto) {
+        User currentUser = userRepository.findByEmail(coachUpdateReqDto.getCoachResDto().getGmail());
+        currentUser.setFirstName(coachUpdateReqDto.getCoachResDto().getFirstName());
+        currentUser.setLastName(coachUpdateReqDto.getCoachResDto().getLastName());
+        currentUser.setIsActive(coachUpdateReqDto.getIsActive());
+        userRepository.save(currentUser);
+        TrainingType trainingType = trainingTypeService.getTrainingTypeIdByName(coachUpdateReqDto.getCoachResDto().getSpecializations());
+        Coach currentCoach = coachRepository.findByUserId(currentUser.getId());
+        currentCoach.setTrainingType(trainingType);
+        coachRepository.save(currentCoach);
+        return getCoachProfile(currentUser.getEmail());
     }
 }
