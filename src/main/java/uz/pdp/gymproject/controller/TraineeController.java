@@ -29,7 +29,6 @@ public class TraineeController {
     @GetMapping()
     public HttpEntity<?> getTraineeProfile(){
         TraineeResDto traineeResDto = traineeService.getTraineeProfile(auditorAware.getAuthenticatedUser());
-        System.out.println(auditorAware.getAuthenticatedUser().getEmail());
         return ResponseEntity.ok(
                 Response.builder().message("Trainee profile").data(traineeResDto).build()
         );
