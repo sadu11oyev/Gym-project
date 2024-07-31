@@ -18,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/coach")
 public class CoachController {
-    private final TrainingTypeService trainingTypeService;
     private final CoachService coachService;
 
     @GetMapping()
