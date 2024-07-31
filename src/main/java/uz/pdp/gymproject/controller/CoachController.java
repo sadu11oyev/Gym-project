@@ -28,10 +28,7 @@ public class CoachController {
         );
     }
 
-
-
-
-    @PostMapping("update")
+    @PutMapping("update")
     public CoachResDto2 updateCoach(@RequestBody CoachUpdateReqDto coachUpdateReqDto){
         return coachService.updateCoach(coachUpdateReqDto);
     }

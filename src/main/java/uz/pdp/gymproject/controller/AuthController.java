@@ -37,7 +37,6 @@ public class AuthController {
         );
     }
 
-
     @Tag(name = "Login user")
     @Transactional
     @SneakyThrows

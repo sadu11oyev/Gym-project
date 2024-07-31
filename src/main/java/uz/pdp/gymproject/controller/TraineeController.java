@@ -5,7 +5,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.gymproject.config.AuditorAwareImpl;
-import uz.pdp.gymproject.dto.TraineeDto;
 import uz.pdp.gymproject.model.request.TraineeReqDto;
 import uz.pdp.gymproject.model.request.TraineeTrainingDto;
 import uz.pdp.gymproject.model.request.UpdateCoachList;
@@ -14,7 +13,6 @@ import uz.pdp.gymproject.model.response.TraineeResDto;
 import uz.pdp.gymproject.model.response.TraineeTrainingResDto;
 import uz.pdp.gymproject.model.response.TraineeUpdateResDto;
 import uz.pdp.gymproject.response.Response;
-import uz.pdp.gymproject.service.DATA;
 import uz.pdp.gymproject.service.TraineeService;
 
 import java.util.List;
