@@ -9,6 +9,7 @@ import uz.pdp.gymproject.entity.TrainingType;
 import uz.pdp.gymproject.entity.User;
 import uz.pdp.gymproject.entity.enums.RoleName;
 import uz.pdp.gymproject.mappers.CoachMapper;
+import uz.pdp.gymproject.mappers.TrainingTypeMapper;
 import uz.pdp.gymproject.model.request.CoachUpdateReqDto;
 import uz.pdp.gymproject.model.response.CoachResDto;
 import uz.pdp.gymproject.model.response.dto.CoachResDto2;
@@ -24,6 +25,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class CoachServiceImpl implements CoachService {
+    private final TrainingTypeMapper trainingTypeMapper;
     private final CoachRepository coachRepository;
     private final CoachMapper coachMapper;
     private final AuthService authService;
@@ -39,8 +41,10 @@ public class CoachServiceImpl implements CoachService {
         User user = userRepository.findByEmail(email);
         Role roleName = roleRepository.findByRoleName(RoleName.ROLE_COACH.name());
         user.setRoles(List.of(roleName));
-        trainingTypeService.save(coachDto.getTrainingTypeDto());
+        TrainingType trainingType = trainingTypeMapper.toEntity(coachDto.getTrainingTypeDto());
+        trainingTypeRepository.save(trainingType);
         Coach newCoach = coachMapper.toEntity(coachDto);
+        newCoach.setTrainingType(trainingType);
         newCoach.setUser(user);
         coachRepository.save(newCoach);
         return "Email:"+newCoach.getUser().getEmail()+" Password: "+ coachDto.getRegisterDto().password();

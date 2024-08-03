@@ -30,6 +30,7 @@ public class AdminController {
 
     @PostMapping("coachRegister")
     public HttpEntity<?> saveCoach(@RequestBody CoachDto coachDto){
+        System.out.println(coachDto.getTrainingTypeDto().name());
         return ResponseEntity.ok(
                 Response.builder().message("Response").data(coachService.save(coachDto)).build()
         );
