@@ -62,7 +62,7 @@ public class TraineeServiceImpl implements TraineeService {
         }).toList();
         return TraineeResDto.builder()
                  .firstName(trainee.getUser().getFirstName())
-                 .lastName(trainee.getUser().getFirstName())
+                 .lastName(trainee.getUser().getLastName())
                  .address(trainee.getAddress())
                  .dateBirth(trainee.getBirthDate())
                  .isActive(trainee.getUser().getIsActive())
