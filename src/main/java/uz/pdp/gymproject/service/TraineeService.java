@@ -2,6 +2,7 @@ package uz.pdp.gymproject.service;
 
 import uz.pdp.gymproject.dto.TraineeDto;
 import uz.pdp.gymproject.entity.User;
+import uz.pdp.gymproject.model.request.AddTrainingReqDto;
 import uz.pdp.gymproject.model.request.TraineeReqDto;
 import uz.pdp.gymproject.model.request.TraineeTrainingDto;
 import uz.pdp.gymproject.model.request.UpdateCoachList;
@@ -25,4 +26,6 @@ public interface TraineeService {
     List<CoachResDto> updateCoachList(UpdateCoachList updateCoachList);
 
     TraineeTrainingResDto getTrainingList(TraineeTrainingDto traineeTrainingDto);
+
+    String addTraining(AddTrainingReqDto addTrainingReqDto);
 }

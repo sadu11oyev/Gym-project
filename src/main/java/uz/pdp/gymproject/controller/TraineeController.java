@@ -5,6 +5,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.gymproject.config.AuditorAwareImpl;
+import uz.pdp.gymproject.model.request.AddTrainingReqDto;
 import uz.pdp.gymproject.model.request.TraineeReqDto;
 import uz.pdp.gymproject.model.request.TraineeTrainingDto;
 import uz.pdp.gymproject.model.request.UpdateCoachList;
@@ -55,6 +56,12 @@ public class TraineeController {
     @GetMapping("getTrainingList")
     public TraineeTrainingResDto getTraineeTrainingList(@RequestBody TraineeTrainingDto traineeTrainingDto){
         return traineeService.getTrainingList(traineeTrainingDto);
+    }
+    @PostMapping("addTraining")
+    public HttpEntity<?> addTraining(@RequestBody AddTrainingReqDto addTrainingReqDto){
+        return ResponseEntity.ok(
+                Response.builder().message("Add training").data(traineeService.addTraining(addTrainingReqDto)).build()
+        );
     }
 
 

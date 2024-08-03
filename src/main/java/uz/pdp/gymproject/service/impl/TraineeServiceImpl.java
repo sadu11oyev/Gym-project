@@ -6,6 +6,7 @@ import uz.pdp.gymproject.dto.TraineeDto;
 import uz.pdp.gymproject.entity.*;
 import uz.pdp.gymproject.entity.enums.RoleName;
 import uz.pdp.gymproject.mappers.TraineeMapper;
+import uz.pdp.gymproject.model.request.AddTrainingReqDto;
 import uz.pdp.gymproject.model.request.TraineeReqDto;
 import uz.pdp.gymproject.model.request.TraineeTrainingDto;
 import uz.pdp.gymproject.model.request.UpdateCoachList;
@@ -36,6 +37,8 @@ public class TraineeServiceImpl implements TraineeService {
     private final TraineeCoachService traineeCoachService;
     private final TrainingRepository trainingRepository;
     private final RoleRepository roleRepository;
+    private final TraineeCoachRepository traineeCoachRepository;
+    private final TrainingTypeRepository trainingTypeRepository;
 
     @Override
     public String saveTrainee(TraineeDto traineeDto) {
@@ -123,5 +126,26 @@ public class TraineeServiceImpl implements TraineeService {
         }
 
         return null;
+    }
+
+    @Override
+    public String addTraining(AddTrainingReqDto addTrainingReqDto) {
+        Trainee trainee = traineeRepository.findByUserId(userRepository.findByEmail(addTrainingReqDto.getTraineeUserName()).getId());
+        Coach coach = coachRepository.findByUserId(userRepository.findByEmail(addTrainingReqDto.getCoachUserName()).getId());
+        TraineeCoach traineeCoach = TraineeCoach.builder()
+                .coach(coach)
+                .trainee(trainee)
+                .build();
+        traineeCoachRepository.save(traineeCoach);
+        Training training = Training.builder()
+                .trainee(trainee)
+                .coach(coach)
+                .trainingName(addTrainingReqDto.getTrainingName())
+                .date(addTrainingReqDto.getData())
+                .duration(addTrainingReqDto.getDuration())
+                .trainingType(coach.getTrainingType())
+                .build();
+        trainingRepository.save(training);
+        return "Saved!";
     }
 }
