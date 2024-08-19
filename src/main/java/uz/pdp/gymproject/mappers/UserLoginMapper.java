@@ -1,15 +1,15 @@
 package uz.pdp.gymproject.mappers;
 
 import org.mapstruct.*;
-import uz.pdp.gymproject.dto.RegisterDto;
+import uz.pdp.gymproject.dto.LoginDto;
 import uz.pdp.gymproject.entity.User;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
-public interface UserRegisterMapper {
-    User toEntity(RegisterDto registerDto);
+public interface UserLoginMapper {
+    User toEntity(LoginDto loginDto);
 
-    RegisterDto toDto(User user);
+    LoginDto toDto(User user);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    User partialUpdate(RegisterDto registerDto, @MappingTarget User user);
+    User partialUpdate(LoginDto loginDto, @MappingTarget User user);
 }

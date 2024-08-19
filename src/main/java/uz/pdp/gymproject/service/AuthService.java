@@ -7,8 +7,17 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
+import uz.pdp.gymproject.dto.LoginDto;
+import uz.pdp.gymproject.dto.RegisterDto;
 import uz.pdp.gymproject.entity.Attachment;
+import uz.pdp.gymproject.entity.Role;
 import uz.pdp.gymproject.entity.User;
+import uz.pdp.gymproject.entity.enums.RoleName;
+import uz.pdp.gymproject.mappers.UserLoginMapper;
+import uz.pdp.gymproject.mappers.UserRegisterMapper;
+import uz.pdp.gymproject.repo.AttachmentRepository;
+import uz.pdp.gymproject.repo.RoleRepository;
+import uz.pdp.gymproject.repo.UserRepository;
 
 import java.io.File;
 import java.nio.file.Files;
