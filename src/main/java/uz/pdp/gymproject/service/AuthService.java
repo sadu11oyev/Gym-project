@@ -29,27 +29,13 @@ public class AuthService {
     private final UserRepository userRepository;
     private final UserLoginMapper userLoginMapper;
     private final AuthenticationManager authenticationManager;
-    private final AttachmentRepository attachmentRepository;
 
     public String register(RegisterDto registerDto) {
         User user = userRegisterMapper.toEntity(registerDto);
         Role roleUser = roleRepository.findByRoleName(RoleName.ROLE_USER.name());
         user.setRoles(List.of(roleUser));
-        setDefaultPhotoToUser(user);
         userRepository.save(user);
         return user.getEmail();
-    }
-
-    @SneakyThrows
-    private void setDefaultPhotoToUser(User user) {
-        File file =new File("photo/default_user.png");
-        byte[] photo = Files.readAllBytes(file.toPath());
-        Attachment attachment = Attachment.builder()
-                .fullImage(photo)
-                .build();
-        attachment.compressImage();
-        attachmentRepository.save(attachment);
-        user.setAttachment(attachment);
     }
 
     public String login(LoginDto loginDto) {
