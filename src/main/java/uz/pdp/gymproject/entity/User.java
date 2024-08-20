@@ -29,9 +29,7 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String email;
     private String password;
-
-    @OneToOne
-    private Attachment attachment;
+    private Boolean isActive;
 
     @ManyToMany
     private List<Role> roles;

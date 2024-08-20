@@ -5,17 +5,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import uz.pdp.gymproject.entity.Attachment;
 import uz.pdp.gymproject.entity.Role;
 import uz.pdp.gymproject.entity.User;
 import uz.pdp.gymproject.entity.enums.RoleName;
-import uz.pdp.gymproject.repo.AttachmentRepository;
 import uz.pdp.gymproject.repo.RoleRepository;
 import uz.pdp.gymproject.repo.UserRepository;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.List;
 
 @Component
@@ -23,7 +19,6 @@ import java.util.List;
 public class Runner implements CommandLineRunner {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final AttachmentRepository attachmentRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Value("${spring.jpa.hibernate.ddl-auto}")
@@ -39,20 +34,12 @@ public class Runner implements CommandLineRunner {
             Role roleUser = new Role(3, RoleName.ROLE_USER);
             roleRepository.saveAll(List.of(roleAdmin,roleManager,roleUser));
 
-            File file =new File("photo/mafia.jpg");
-            byte[] photo = Files.readAllBytes(file.toPath());
-            Attachment attachment = Attachment.builder()
-                    .fullImage(photo)
-                    .build();
-            attachmentRepository.save(attachment);
-
             User admin = User.builder()
                     .firstName("Baxtiyor")
                     .lastName("Sadulloyev")
                     .phone("97 864 44 00")
                     .email("baxti@gmail.com")
                     .password(passwordEncoder.encode("root123"))
-                    .attachment(attachment)
                     .roles(List.of(roleAdmin,roleManager))
                     .build();
             userRepository.save(admin);
