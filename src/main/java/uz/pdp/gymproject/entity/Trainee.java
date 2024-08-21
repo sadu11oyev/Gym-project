@@ -21,7 +21,7 @@ public class Trainee {
 
     @OneToOne
     private User user;
-    private LocalDate localDate;
+    private LocalDate birthDate;
     private String address;
 
 }
