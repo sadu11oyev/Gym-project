@@ -14,14 +14,6 @@ import uz.pdp.gymproject.service.UserService;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final UserRepository userRepository;
-    private final TraineeRepository traineeRepository;
-    private final UserMapper userMapper;
-    private final TraineeMapper traineeMapper;
-    @Override
-    public ResponseEntity<Trainee> saveTrainee(TraineeDto traineeDto) {
-        Trainee entity = traineeMapper.toEntity(traineeDto);
-        Trainee save =  traineeRepository.save(entity);
-        return ResponseEntity.status(200).body(save);
-    }
+
+
 }

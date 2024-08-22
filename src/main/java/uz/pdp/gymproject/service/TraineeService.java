@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import uz.pdp.gymproject.dto.TraineeDto;
 import uz.pdp.gymproject.entity.Trainee;
 
-public interface UserService {
+public interface TraineeService {
 
+    ResponseEntity<Trainee> saveTrainee(TraineeDto traineeDto);
 }
