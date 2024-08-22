@@ -28,8 +28,6 @@ public class AuthController {
     @Transactional
     @PostMapping("/register")
     public HttpEntity<?> register(@RequestBody RegisterDto registerDto) {
-
-
         String email=authService.register(registerDto);
         return ResponseEntity.ok(
                 Response.builder().message("Token").data("Bearer " + jwtUtil.generateToken(email)).build()
@@ -41,7 +39,6 @@ public class AuthController {
     @SneakyThrows
     @PostMapping("/login")
     public HttpEntity<?> login(@RequestBody LoginDto loginDto) {
-
         String email=authService.login(loginDto);
         return ResponseEntity.ok(
                 Response.builder().message("Token").data("Bearer " + jwtUtil.generateToken(email)).build()

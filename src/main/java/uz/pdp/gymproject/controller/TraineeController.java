@@ -17,10 +17,10 @@ public class TraineeController {
     private final UserService userService;
 
     @GetMapping("register")
-    ResponseEntity<List<String>> getAddresses(){return (ResponseEntity<List<String>>) List.of(DATA.districtList);
+    public ResponseEntity<List<String>> getAddresses(){return ResponseEntity.ok(DATA.districtList);
     }
     @PostMapping("register")
-    private ResponseEntity<Trainee> saveTrainee(@RequestBody TraineeDto traineeDto){
+    public ResponseEntity<Trainee> saveTrainee(@RequestBody TraineeDto traineeDto){
         return userService.saveTrainee(traineeDto);
     }
 
