@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import uz.pdp.gymproject.dto.ChangePasswordDto;
 import uz.pdp.gymproject.dto.LoginDto;
 import uz.pdp.gymproject.dto.RegisterDto;
+import uz.pdp.gymproject.entity.User;
 import uz.pdp.gymproject.response.Response;
 import uz.pdp.gymproject.security.JwtUtil;
 import uz.pdp.gymproject.service.AuthService;
@@ -42,6 +44,17 @@ public class AuthController {
         String email=authService.login(loginDto);
         return ResponseEntity.ok(
                 Response.builder().message("Token").data("Bearer " + jwtUtil.generateToken(email)).build()
+        );
+    }
+
+    @Tag(name = "Change password")
+    @Transactional
+    @SneakyThrows
+    @PostMapping("/changePassword")
+    public HttpEntity<?> changePassword(@RequestBody ChangePasswordDto changePasswordDto){
+        String email = authService.changePassword(changePasswordDto);
+        return ResponseEntity.ok(
+                Response.builder().message("Password changed successfully").data(email).build()
         );
     }
 }

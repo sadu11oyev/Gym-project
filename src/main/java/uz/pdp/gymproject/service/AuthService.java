@@ -6,7 +6,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import uz.pdp.gymproject.dto.ChangePasswordDto;
 import uz.pdp.gymproject.dto.LoginDto;
 import uz.pdp.gymproject.dto.RegisterDto;
 import uz.pdp.gymproject.entity.Role;
@@ -29,6 +31,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final UserLoginMapper userLoginMapper;
     private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
 
     public String register(RegisterDto registerDto) {
         User user = userRegisterMapper.toEntity(registerDto);
@@ -47,6 +50,15 @@ public class AuthService {
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid email or password", e);
         }
+        return user.getEmail();
+    }
+
+    public String changePassword(ChangePasswordDto changePasswordDto) {
+        LoginDto loginDto = new LoginDto(changePasswordDto.getEmail(),changePasswordDto.getPassword());
+        String email = login(loginDto);
+        User user = userRepository.findByEmail(email);
+        user.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
+        userRepository.save(user);
         return user.getEmail();
     }
 }
