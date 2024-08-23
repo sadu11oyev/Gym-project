@@ -9,4 +9,6 @@ import uz.pdp.gymproject.entity.Trainee;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface TraineeMapper {
     Trainee toEntity(TraineeDto traineeDto);
+
+    TraineeDto toDto(Trainee trainee);
 }
