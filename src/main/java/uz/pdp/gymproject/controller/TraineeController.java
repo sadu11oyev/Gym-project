@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import uz.pdp.gymproject.dto.TraineeDto;
 import uz.pdp.gymproject.entity.Trainee;
 import uz.pdp.gymproject.entity.User;
+import uz.pdp.gymproject.model.request.TraineeReqDto;
 import uz.pdp.gymproject.model.response.TraineeResDto;
+import uz.pdp.gymproject.model.response.TraineeUpdateResDto;
 import uz.pdp.gymproject.response.Response;
 import uz.pdp.gymproject.service.DATA;
 import uz.pdp.gymproject.service.TraineeService;
@@ -36,8 +38,20 @@ public class TraineeController {
         return traineeService.saveTrainee(traineeDto);
     }
 
-//    @PostMapping("update")
-//    public HttpEntity<?> updateTrainee(@RequestBody )
+    @PostMapping("update")
+    public HttpEntity<?> updateTrainee(@RequestBody TraineeReqDto traineeReqDto){
+        TraineeUpdateResDto traineeUpdateResDto = traineeService.getUpdateTraineeProfile(traineeReqDto);
+        return ResponseEntity.ok(
+                Response.builder().message("Update trainee profile").data(traineeUpdateResDto).build()
+        );
+    }
+
+    @PostMapping("delete")
+    public HttpEntity<?> deleteTrainee(@PathVariable String email){
+        return ResponseEntity.ok(
+                Response.builder().message("Delete trainee").data(traineeService.deleteTrainee(email)).build()
+        );
+    }
 
 
 }
