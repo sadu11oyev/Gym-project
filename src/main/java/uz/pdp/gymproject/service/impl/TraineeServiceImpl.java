@@ -4,12 +4,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uz.pdp.gymproject.dto.TraineeDto;
+import uz.pdp.gymproject.entity.Coach;
 import uz.pdp.gymproject.entity.Trainee;
 import uz.pdp.gymproject.entity.User;
 import uz.pdp.gymproject.mappers.TraineeMapper;
+import uz.pdp.gymproject.model.response.CoachResDto;
+import uz.pdp.gymproject.model.response.TraineeResDto;
+import uz.pdp.gymproject.repo.CoachRepository;
 import uz.pdp.gymproject.repo.TraineeRepository;
 import uz.pdp.gymproject.repo.UserRepository;
 import uz.pdp.gymproject.service.TraineeService;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +25,7 @@ public class TraineeServiceImpl implements TraineeService {
     private final TraineeMapper traineeMapper;
     private final TraineeRepository traineeRepository;
     private final UserRepository userRepository;
+    private final CoachRepository coachRepository;
 
     @Override
     public ResponseEntity<Trainee> saveTrainee(TraineeDto traineeDto) {
@@ -26,9 +35,25 @@ public class TraineeServiceImpl implements TraineeService {
     }
 
     @Override
-    public TraineeDto getTraineeProfile(String email) {
-        User user = userRepository.findByEmail(email);
-        Trainee trainee = traineeRepository.findByUserId(user.getId());
-        return traineeMapper.toDto(trainee);
+    public TraineeResDto getTraineeProfile(String email) {
+        Trainee trainee = traineeRepository.findByUserId(userRepository.findByEmail(email).getId());
+        List<UUID> coachIdList = coachRepository.findAllIdByTraineeId(trainee.getId());
+        List<CoachResDto> coachResDtos = coachIdList.stream().map(coachId -> {
+            Optional<Coach> optionalCoach = coachRepository.findById(coachId);
+            return optionalCoach.map(coach -> CoachResDto.builder()
+                    .gmail(coach.getUser().getEmail())
+                    .firstName(coach.getUser().getFirstName())
+                    .lastName(coach.getUser().getLastName())
+                    .specializations(coachRepository.findSpecializations(coachId))
+                    .build()).orElse(null);
+        }).toList();
+        return TraineeResDto.builder()
+                 .firstName(trainee.getUser().getFirstName())
+                 .lastName(trainee.getUser().getFirstName())
+                 .address(trainee.getAddress())
+                 .dateBirth(trainee.getBirthDate())
+                 .isActive(trainee.getUser().getIsActive())
+                 .coachResDto(coachResDtos)
+                 .build();
     }
 }

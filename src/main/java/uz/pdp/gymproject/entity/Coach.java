@@ -20,6 +20,6 @@ public class Coach {
     @OneToOne
     private User user;
 
-    @ManyToOne
+    @OneToOne
     private TrainingType trainingType;
 }

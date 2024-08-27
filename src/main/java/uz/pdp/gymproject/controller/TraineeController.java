@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import uz.pdp.gymproject.dto.TraineeDto;
 import uz.pdp.gymproject.entity.Trainee;
 import uz.pdp.gymproject.entity.User;
+import uz.pdp.gymproject.model.response.TraineeResDto;
 import uz.pdp.gymproject.response.Response;
 import uz.pdp.gymproject.service.DATA;
 import uz.pdp.gymproject.service.TraineeService;
@@ -20,10 +21,10 @@ public class TraineeController {
     private final TraineeService traineeService;
 
     @GetMapping()
-    public HttpEntity<?> getTraineeProfile(String gmail){
-        TraineeDto trainee = traineeService.getTraineeProfile(gmail);
+    public HttpEntity<?> getTraineeProfile(@PathVariable String gmail){
+        TraineeResDto traineeResDto = traineeService.getTraineeProfile(gmail);
         return ResponseEntity.ok(
-                Response.builder().message("Trainee profile").data(trainee).build()
+                Response.builder().message("Trainee profile").data(traineeResDto).build()
         );
     }
 
