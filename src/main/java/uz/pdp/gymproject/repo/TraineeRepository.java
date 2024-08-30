@@ -13,4 +13,5 @@ public interface TraineeRepository extends JpaRepository<Trainee, UUID> {
     @Modifying
     @Query(nativeQuery = true, value = "select * from trainee where user_id =:id")
     Trainee findByUserId(UUID id);
+
 }

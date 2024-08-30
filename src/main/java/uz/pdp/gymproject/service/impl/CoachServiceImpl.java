@@ -78,4 +78,14 @@ public class CoachServiceImpl implements CoachService {
         coachRepository.save(currentCoach);
         return getCoachProfile(currentUser.getEmail());
     }
+
+    @Override
+    public CoachResDto generateCoachResDto(Coach coach) {
+        return CoachResDto.builder()
+                .gmail(coach.getUser().getEmail())
+                .firstName(coach.getUser().getFirstName())
+                .lastName(coach.getUser().getLastName())
+                .specializations(coachRepository.findSpecializations(coach.getId()))
+                .build();
+    }
 }

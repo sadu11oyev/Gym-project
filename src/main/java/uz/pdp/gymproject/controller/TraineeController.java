@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.gymproject.dto.TraineeDto;
 import uz.pdp.gymproject.model.request.TraineeReqDto;
+import uz.pdp.gymproject.model.request.UpdateCoachList;
+import uz.pdp.gymproject.model.response.CoachResDto;
 import uz.pdp.gymproject.model.response.TraineeResDto;
 import uz.pdp.gymproject.model.response.TraineeUpdateResDto;
 import uz.pdp.gymproject.response.Response;
@@ -51,6 +53,11 @@ public class TraineeController {
         return ResponseEntity.ok(
                 Response.builder().message("Delete trainee").data(traineeService.deleteTrainee(email)).build()
         );
+    }
+
+    @PostMapping("updateCoachList")
+    public List<CoachResDto> updateCoachList(@RequestBody UpdateCoachList updateCoachList){
+        return traineeService.updateCoachList(updateCoachList);
     }
 
 

@@ -40,6 +40,7 @@ public class Runner implements CommandLineRunner {
                     .phone("97 864 44 00")
                     .email("baxti@gmail.com")
                     .password(passwordEncoder.encode("root123"))
+                    .isActive(true)
                     .roles(List.of(roleAdmin,roleManager))
                     .build();
             userRepository.save(admin);

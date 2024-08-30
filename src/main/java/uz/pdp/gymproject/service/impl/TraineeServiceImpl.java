@@ -1,13 +1,16 @@
 package uz.pdp.gymproject.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import uz.pdp.gymproject.dto.TraineeDto;
 import uz.pdp.gymproject.entity.Coach;
 import uz.pdp.gymproject.entity.Trainee;
+import uz.pdp.gymproject.entity.TraineeCoach;
 import uz.pdp.gymproject.entity.User;
 import uz.pdp.gymproject.mappers.TraineeMapper;
 import uz.pdp.gymproject.model.request.TraineeReqDto;
+import uz.pdp.gymproject.model.request.UpdateCoachList;
 import uz.pdp.gymproject.model.response.CoachResDto;
 import uz.pdp.gymproject.model.response.TraineeResDto;
 import uz.pdp.gymproject.model.response.TraineeUpdateResDto;
@@ -15,8 +18,11 @@ import uz.pdp.gymproject.repo.CoachRepository;
 import uz.pdp.gymproject.repo.TraineeRepository;
 import uz.pdp.gymproject.repo.UserRepository;
 import uz.pdp.gymproject.service.AuthService;
+import uz.pdp.gymproject.service.CoachService;
+import uz.pdp.gymproject.service.TraineeCoachService;
 import uz.pdp.gymproject.service.TraineeService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -28,7 +34,9 @@ public class TraineeServiceImpl implements TraineeService {
     private final TraineeRepository traineeRepository;
     private final UserRepository userRepository;
     private final CoachRepository coachRepository;
+    private final CoachService coachService;
     private final AuthService authService;
+    private final TraineeCoachService traineeCoachService;
 
     @Override
     public String saveTrainee(TraineeDto traineeDto) {
@@ -44,12 +52,7 @@ public class TraineeServiceImpl implements TraineeService {
         List<UUID> coachIdList = coachRepository.findAllIdByTraineeId(trainee.getId());
         List<CoachResDto> coachResDtos = coachIdList.stream().map(coachId -> {
             Optional<Coach> optionalCoach = coachRepository.findById(coachId);
-            return optionalCoach.map(coach -> CoachResDto.builder()
-                    .gmail(coach.getUser().getEmail())
-                    .firstName(coach.getUser().getFirstName())
-                    .lastName(coach.getUser().getLastName())
-                    .specializations(coachRepository.findSpecializations(coachId))
-                    .build()).orElse(null);
+            return optionalCoach.map(coachService::generateCoachResDto).orElse(null);
         }).toList();
         return TraineeResDto.builder()
                  .firstName(trainee.getUser().getFirstName())
@@ -86,5 +89,17 @@ public class TraineeServiceImpl implements TraineeService {
         user.setIsActive(false);
         userRepository.save(user);
         return user.getEmail();
+    }
+
+    @Override
+    public List<CoachResDto> updateCoachList(UpdateCoachList updateCoachList) {
+        Trainee trainee = traineeRepository.findByUserId(userRepository.findByEmail(updateCoachList.getEmail()).getId());
+        List<CoachResDto> coachResDtos = new ArrayList<>();
+        for (String coachEmail : updateCoachList.getCoachEmailList()) {
+            Coach coach = coachRepository.findByUserId(userRepository.findByEmail(coachEmail).getId());
+            traineeCoachService.saveTraineeCoach(trainee,coach);
+            coachResDtos.add(coachService.generateCoachResDto(coach));
+        }
+        return  coachResDtos;
     }
 }
