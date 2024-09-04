@@ -10,6 +10,7 @@ import uz.pdp.gymproject.model.request.TraineeTrainingDto;
 import uz.pdp.gymproject.model.request.UpdateCoachList;
 import uz.pdp.gymproject.model.response.CoachResDto;
 import uz.pdp.gymproject.model.response.TraineeResDto;
+import uz.pdp.gymproject.model.response.TraineeTrainingResDto;
 import uz.pdp.gymproject.model.response.TraineeUpdateResDto;
 import uz.pdp.gymproject.response.Response;
 import uz.pdp.gymproject.service.DATA;
@@ -62,7 +63,7 @@ public class TraineeController {
     }
 
     @GetMapping("getTrainingList")
-    public HttpEntity<?> getTraineeTrainingList(@RequestBody TraineeTrainingDto traineeTrainingDto){
+    public TraineeTrainingResDto getTraineeTrainingList(@RequestBody TraineeTrainingDto traineeTrainingDto){
         return traineeService.getTrainingList(traineeTrainingDto);
     }
 
