@@ -27,17 +27,9 @@ public class CoachController {
                 Response.builder().message("Coach profile: ").data(coachService.getCoachProfile(email)).build()
         );
     }
-    @GetMapping("register")
-    public HttpEntity<List<TrainingTypeDto>> getRegisterPage(){
-        return trainingTypeService.getTrainingTypes();
-    }
 
-    @PostMapping("register")
-    public HttpEntity<?> saveCoach(@RequestBody CoachDto coachDto){
-        return ResponseEntity.ok(
-                Response.builder().message("Response").data(coachService.save(coachDto)).build()
-        );
-    }
+
+
 
     @PostMapping("update")
     public CoachResDto2 updateCoach(@RequestBody CoachUpdateReqDto coachUpdateReqDto){

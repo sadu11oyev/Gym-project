@@ -108,13 +108,17 @@ public class TraineeServiceImpl implements TraineeService {
         Coach coach = coachRepository.findByUserId(userRepository.findByEmail(traineeTrainingDto.getCoachEmail()).getId());
         TrainingType trainingType = traineeRepository.findByName(traineeTrainingDto.getSpecialization());
         Trainee trainee = traineeRepository.findByUserId(userRepository.findByEmail(traineeTrainingDto.getCoachEmail()).getId());
-        Training training = trainingRepository.findByAllReferences(coach.getId(),trainingType.getId(),trainee.getId(),traineeTrainingDto.getFrom(),traineeTrainingDto.getTo());
-        return new TraineeTrainingResDto(
-                training.getTrainingName(),
-                training.getDate(),
-                trainingType.getName(),
-                training.getDuration(),
-                coach.getUser().getUsername());
+        Optional<Training> opt = trainingRepository.findByAllReferences(coach.getId(),trainingType.getId(),trainee.getId());
+        if (opt.isPresent()){
+            Training training = opt.get();
+            return new TraineeTrainingResDto(
+                    training.getTrainingName(),
+                    training.getDate(),
+                    trainingType.getName(),
+                    training.getDuration(),
+                    coach.getUser().getUsername());
+        }
 
+        return null;
     }
 }

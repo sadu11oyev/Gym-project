@@ -30,9 +30,9 @@ public class Runner implements CommandLineRunner {
     private void generateAdmin() throws IOException {
         if (ddl.equals("create")){
             Role roleAdmin = new Role(1, RoleName.ROLE_ADMIN);
-            Role roleManager = new Role(2, RoleName.ROLE_COACH);
+            Role roleCoach = new Role(2, RoleName.ROLE_COACH);
             Role roleUser = new Role(3, RoleName.ROLE_USER);
-            roleRepository.saveAll(List.of(roleAdmin,roleManager,roleUser));
+            roleRepository.saveAll(List.of(roleAdmin,roleCoach,roleUser));
 
             User admin = User.builder()
                     .firstName("Baxtiyor")
@@ -41,7 +41,7 @@ public class Runner implements CommandLineRunner {
                     .email("baxti@gmail.com")
                     .password(passwordEncoder.encode("root123"))
                     .isActive(true)
-                    .roles(List.of(roleAdmin,roleManager))
+                    .roles(List.of(roleAdmin,roleCoach))
                     .build();
             userRepository.save(admin);
         }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uz.pdp.gymproject.config.AuditorAwareImpl;
 import uz.pdp.gymproject.dto.TraineeDto;
 import uz.pdp.gymproject.model.request.TraineeReqDto;
 import uz.pdp.gymproject.model.request.TraineeTrainingDto;
@@ -23,23 +24,15 @@ import java.util.List;
 @RequestMapping("/api/trainee")
 public class TraineeController {
     private final TraineeService traineeService;
+    private final AuditorAwareImpl auditorAware;
 
     @GetMapping()
-    public HttpEntity<?> getTraineeProfile(@PathVariable String gmail){
-        TraineeResDto traineeResDto = traineeService.getTraineeProfile(gmail);
+    public HttpEntity<?> getTraineeProfile(){
+        TraineeResDto traineeResDto = traineeService.getTraineeProfile(auditorAware.getAuthenticatedUser().getEmail());
+        System.out.println(auditorAware.getAuthenticatedUser().getEmail());
         return ResponseEntity.ok(
                 Response.builder().message("Trainee profile").data(traineeResDto).build()
         );
-    }
-
-    @GetMapping("register")
-    public HttpEntity<List<String>> getAddresses(){return ResponseEntity.ok(DATA.districtList);
-    }
-    @PostMapping("register")
-    public HttpEntity<?> saveTrainee(@RequestBody TraineeDto traineeDto){
-        return ResponseEntity.ok(
-                Response.builder().message("Register Data").data(traineeService.saveTrainee(traineeDto)).build()
-        ) ;
     }
 
     @PostMapping("update")

@@ -29,7 +29,7 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String email;
     private String password;
-    private Boolean isActive;
+    private Boolean isActive = true;
 
     @ManyToMany
     private List<Role> roles;
