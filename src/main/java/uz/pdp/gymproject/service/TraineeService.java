@@ -1,6 +1,7 @@
 package uz.pdp.gymproject.service;
 
 import uz.pdp.gymproject.dto.TraineeDto;
+import uz.pdp.gymproject.entity.User;
 import uz.pdp.gymproject.model.request.TraineeReqDto;
 import uz.pdp.gymproject.model.request.TraineeTrainingDto;
 import uz.pdp.gymproject.model.request.UpdateCoachList;
@@ -15,7 +16,7 @@ public interface TraineeService {
 
     String saveTrainee(TraineeDto traineeDto);
 
-    TraineeResDto getTraineeProfile(String gmail);
+    TraineeResDto getTraineeProfile(User user);
 
     TraineeUpdateResDto getUpdateTraineeProfile(TraineeReqDto traineeReqDto);
 

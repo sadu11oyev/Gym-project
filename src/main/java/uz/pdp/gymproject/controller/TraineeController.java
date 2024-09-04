@@ -28,14 +28,14 @@ public class TraineeController {
 
     @GetMapping()
     public HttpEntity<?> getTraineeProfile(){
-        TraineeResDto traineeResDto = traineeService.getTraineeProfile(auditorAware.getAuthenticatedUser().getEmail());
+        TraineeResDto traineeResDto = traineeService.getTraineeProfile(auditorAware.getAuthenticatedUser());
         System.out.println(auditorAware.getAuthenticatedUser().getEmail());
         return ResponseEntity.ok(
                 Response.builder().message("Trainee profile").data(traineeResDto).build()
         );
     }
 
-    @PostMapping("update")
+    @PutMapping("update")
     public HttpEntity<?> updateTrainee(@RequestBody TraineeReqDto traineeReqDto){
         TraineeUpdateResDto traineeUpdateResDto = traineeService.getUpdateTraineeProfile(traineeReqDto);
         return ResponseEntity.ok(
@@ -50,7 +50,7 @@ public class TraineeController {
         );
     }
 
-    @PostMapping("updateCoachList")
+    @PutMapping("updateCoachList")
     public List<CoachResDto> updateCoachList(@RequestBody UpdateCoachList updateCoachList){
         return traineeService.updateCoachList(updateCoachList);
     }

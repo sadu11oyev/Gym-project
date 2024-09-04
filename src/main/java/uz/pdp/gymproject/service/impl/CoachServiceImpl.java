@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.pdp.gymproject.dto.CoachDto;
 import uz.pdp.gymproject.entity.Coach;
+import uz.pdp.gymproject.entity.Role;
 import uz.pdp.gymproject.entity.TrainingType;
 import uz.pdp.gymproject.entity.User;
+import uz.pdp.gymproject.entity.enums.RoleName;
 import uz.pdp.gymproject.mappers.CoachMapper;
 import uz.pdp.gymproject.model.request.CoachUpdateReqDto;
 import uz.pdp.gymproject.model.response.CoachResDto;
@@ -29,12 +31,17 @@ public class CoachServiceImpl implements CoachService {
     private final UserRepository userRepository;
     private final TrainingTypeRepository trainingTypeRepository;
     private final TraineeCoachRepository traineeCoachRepository;
+    private final RoleRepository roleRepository;
 
     @Override
     public String save(CoachDto coachDto) {
-        authService.register(coachDto.getRegisterDto());
+        String email = authService.register(coachDto.getRegisterDto());
+        User user = userRepository.findByEmail(email);
+        Role roleName = roleRepository.findByRoleName(RoleName.ROLE_COACH.name());
+        user.setRoles(List.of(roleName));
         trainingTypeService.save(coachDto.getTrainingTypeDto());
         Coach newCoach = coachMapper.toEntity(coachDto);
+        newCoach.setUser(user);
         coachRepository.save(newCoach);
         return "Email:"+newCoach.getUser().getEmail()+" Password: "+ coachDto.getRegisterDto().password();
     }

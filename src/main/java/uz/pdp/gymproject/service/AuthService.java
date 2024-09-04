@@ -35,10 +35,8 @@ public class AuthService {
 
     public String register(RegisterDto registerDto) {
         User user = userRegisterMapper.toEntity(registerDto);
-        Role roleUser = roleRepository.findByRoleName(RoleName.ROLE_USER.name());
-        user.setRoles(List.of(roleUser));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setIsActive(false);
+        user.setIsActive(true);
         userRepository.save(user);
         return user.getEmail();
     }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.pdp.gymproject.dto.TraineeDto;
 import uz.pdp.gymproject.entity.*;
+import uz.pdp.gymproject.entity.enums.RoleName;
 import uz.pdp.gymproject.mappers.TraineeMapper;
 import uz.pdp.gymproject.model.request.TraineeReqDto;
 import uz.pdp.gymproject.model.request.TraineeTrainingDto;
@@ -12,10 +13,7 @@ import uz.pdp.gymproject.model.response.CoachResDto;
 import uz.pdp.gymproject.model.response.TraineeResDto;
 import uz.pdp.gymproject.model.response.TraineeTrainingResDto;
 import uz.pdp.gymproject.model.response.TraineeUpdateResDto;
-import uz.pdp.gymproject.repo.CoachRepository;
-import uz.pdp.gymproject.repo.TraineeRepository;
-import uz.pdp.gymproject.repo.TrainingRepository;
-import uz.pdp.gymproject.repo.UserRepository;
+import uz.pdp.gymproject.repo.*;
 import uz.pdp.gymproject.service.AuthService;
 import uz.pdp.gymproject.service.CoachService;
 import uz.pdp.gymproject.service.TraineeCoachService;
@@ -37,18 +35,23 @@ public class TraineeServiceImpl implements TraineeService {
     private final AuthService authService;
     private final TraineeCoachService traineeCoachService;
     private final TrainingRepository trainingRepository;
+    private final RoleRepository roleRepository;
 
     @Override
     public String saveTrainee(TraineeDto traineeDto) {
-        authService.register(traineeDto.getRegisterDto());
+        String email = authService.register(traineeDto.getRegisterDto());
+        User user = userRepository.findByEmail(email);
+        Role roleUser = roleRepository.findByRoleName(RoleName.ROLE_TRAINEE.name());
+        user.setRoles(List.of(roleUser));
         Trainee entity = traineeMapper.toEntity(traineeDto);
+        entity.setUser(user);
         traineeRepository.save(entity);
         return "Email: "+traineeDto.getRegisterDto().email()+" Password: "+traineeDto.getRegisterDto().password();
     }
 
     @Override
-    public TraineeResDto getTraineeProfile(String email) {
-        Trainee trainee = traineeRepository.findByUserId(userRepository.findByEmail(email).getId());
+    public TraineeResDto getTraineeProfile(User user) {
+        Trainee trainee = traineeRepository.findByUserId(user.getId());
         List<UUID> coachIdList = coachRepository.findAllIdByTraineeId(trainee.getId());
         List<CoachResDto> coachResDtos = coachIdList.stream().map(coachId -> {
             Optional<Coach> optionalCoach = coachRepository.findById(coachId);
@@ -78,7 +81,7 @@ public class TraineeServiceImpl implements TraineeService {
         trainee.setBirthDate(traineeReqDto.getLocalDate());
         traineeRepository.save(trainee);
         return TraineeUpdateResDto.builder()
-                .traineeResDto(getTraineeProfile(user.getEmail()))
+                .traineeResDto(getTraineeProfile(user))
                 .gmail(user.getEmail())
                 .build();
     }

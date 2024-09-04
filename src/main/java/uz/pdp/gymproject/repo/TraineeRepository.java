@@ -11,11 +11,10 @@ import java.util.UUID;
 
 public interface TraineeRepository extends JpaRepository<Trainee, UUID> {
     @Transactional
-    @Modifying
     @Query(nativeQuery = true, value = "select * from trainee where user_id =:id")
     Trainee findByUserId(UUID id);
 
     @Transactional
-    @Query(nativeQuery = true, value = "select * from training_type where name =: specialization")
+    @Query(nativeQuery = true, value = "select * from training_type where name=:specialization")
     TrainingType findByName(String specialization);
 }

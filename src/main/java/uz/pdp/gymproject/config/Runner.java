@@ -31,8 +31,8 @@ public class Runner implements CommandLineRunner {
         if (ddl.equals("create")){
             Role roleAdmin = new Role(1, RoleName.ROLE_ADMIN);
             Role roleCoach = new Role(2, RoleName.ROLE_COACH);
-            Role roleUser = new Role(3, RoleName.ROLE_USER);
-            roleRepository.saveAll(List.of(roleAdmin,roleCoach,roleUser));
+            Role roleTrainee = new Role(3, RoleName.ROLE_TRAINEE);
+            roleRepository.saveAll(List.of(roleAdmin,roleCoach,roleTrainee));
 
             User admin = User.builder()
                     .firstName("Baxtiyor")
