@@ -1,21 +1,20 @@
 package uz.pdp.gymproject.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
 import uz.pdp.gymproject.dto.TraineeDto;
-import uz.pdp.gymproject.entity.Coach;
-import uz.pdp.gymproject.entity.Trainee;
-import uz.pdp.gymproject.entity.TraineeCoach;
-import uz.pdp.gymproject.entity.User;
+import uz.pdp.gymproject.entity.*;
 import uz.pdp.gymproject.mappers.TraineeMapper;
 import uz.pdp.gymproject.model.request.TraineeReqDto;
+import uz.pdp.gymproject.model.request.TraineeTrainingDto;
 import uz.pdp.gymproject.model.request.UpdateCoachList;
 import uz.pdp.gymproject.model.response.CoachResDto;
 import uz.pdp.gymproject.model.response.TraineeResDto;
+import uz.pdp.gymproject.model.response.TraineeTrainingResDto;
 import uz.pdp.gymproject.model.response.TraineeUpdateResDto;
 import uz.pdp.gymproject.repo.CoachRepository;
 import uz.pdp.gymproject.repo.TraineeRepository;
+import uz.pdp.gymproject.repo.TrainingRepository;
 import uz.pdp.gymproject.repo.UserRepository;
 import uz.pdp.gymproject.service.AuthService;
 import uz.pdp.gymproject.service.CoachService;
@@ -37,6 +36,7 @@ public class TraineeServiceImpl implements TraineeService {
     private final CoachService coachService;
     private final AuthService authService;
     private final TraineeCoachService traineeCoachService;
+    private final TrainingRepository trainingRepository;
 
     @Override
     public String saveTrainee(TraineeDto traineeDto) {
@@ -101,5 +101,20 @@ public class TraineeServiceImpl implements TraineeService {
             coachResDtos.add(coachService.generateCoachResDto(coach));
         }
         return  coachResDtos;
+    }
+
+    @Override
+    public TraineeTrainingResDto getTrainingList(TraineeTrainingDto traineeTrainingDto) {
+        Coach coach = coachRepository.findByUserId(userRepository.findByEmail(traineeTrainingDto.getCoachEmail()).getId());
+        TrainingType trainingType = traineeRepository.findByName(traineeTrainingDto.getSpecialization());
+        Trainee trainee = traineeRepository.findByUserId(userRepository.findByEmail(traineeTrainingDto.getCoachEmail()).getId());
+        Training training = trainingRepository.findByAllReferences(coach.getId(),trainingType.getId(),trainee.getId(),traineeTrainingDto.getFrom(),traineeTrainingDto.getTo());
+        return new TraineeTrainingResDto(
+                training.getTrainingName(),
+                training.getDate(),
+                trainingType.getName(),
+                training.getDuration(),
+                coach.getUser().getUsername());
+
     }
 }
