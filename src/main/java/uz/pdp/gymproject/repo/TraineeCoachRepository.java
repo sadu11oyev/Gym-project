@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 public interface TraineeCoachRepository extends JpaRepository<TraineeCoach, UUID> {
-    @Query(nativeQuery = true, value = "select trc.trainee_id from trainee_coach trc where coach_id =: coachId ")
+    @Query(nativeQuery = true, value = "select trainee_id from trainee_coach where coach_id = :coachId ")
     List<UUID> getTraineeIdByCoachId(UUID coachId);
 }

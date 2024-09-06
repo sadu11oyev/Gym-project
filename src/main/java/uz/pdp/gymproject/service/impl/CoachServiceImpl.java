@@ -51,8 +51,7 @@ public class CoachServiceImpl implements CoachService {
     }
 
     @Override
-    public CoachResDto2 getCoachProfile(String email) {
-        User user = userRepository.findByEmail(email);
+    public CoachResDto2 getCoachProfile(User user) {
         Coach coach = coachRepository.findByUserId(user.getId());
         String specialization = trainingTypeRepository.findById(coach.getTrainingType().getId()).get().getName();
         CoachResDto coachResDto = CoachResDto.builder()
@@ -87,7 +86,7 @@ public class CoachServiceImpl implements CoachService {
         Coach currentCoach = coachRepository.findByUserId(currentUser.getId());
         currentCoach.setTrainingType(trainingType);
         coachRepository.save(currentCoach);
-        return getCoachProfile(currentUser.getEmail());
+        return getCoachProfile(currentUser);
     }
 
     @Override

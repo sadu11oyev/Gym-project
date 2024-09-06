@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uz.pdp.gymproject.config.AuditorAwareImpl;
 import uz.pdp.gymproject.dto.CoachDto;
 import uz.pdp.gymproject.dto.TrainingTypeDto;
 import uz.pdp.gymproject.model.request.CoachUpdateReqDto;
@@ -19,11 +20,12 @@ import java.util.List;
 @RequestMapping("/api/coach")
 public class CoachController {
     private final CoachService coachService;
+    private final AuditorAwareImpl auditorAware;
 
     @GetMapping()
-    public HttpEntity<?> getCoachProfile(@RequestParam String email){
+    public HttpEntity<?> getCoachProfile(){
         return ResponseEntity.ok(
-                Response.builder().message("Coach profile: ").data(coachService.getCoachProfile(email)).build()
+                Response.builder().message("Coach profile: ").data(coachService.getCoachProfile(auditorAware.getAuthenticatedUser())).build()
         );
     }
 
