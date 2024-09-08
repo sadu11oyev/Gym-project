@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 public class TraineeRes {
     private String firstName;
     private String lastName;
-    private String email;
+    private String userName;
 }

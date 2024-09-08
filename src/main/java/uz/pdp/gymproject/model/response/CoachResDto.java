@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class CoachResDto {
-    private String gmail;
+    private String userName;
     private String firstName;
     private String lastName;
     private String specializations;

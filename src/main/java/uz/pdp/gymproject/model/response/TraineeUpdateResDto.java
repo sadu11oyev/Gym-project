@@ -6,6 +6,6 @@ import lombok.Data;
 @Data
 @Builder
 public class TraineeUpdateResDto {
-    private String gmail;
+    private String userName;
     private TraineeResDto traineeResDto;
 }

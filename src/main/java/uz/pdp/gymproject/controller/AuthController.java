@@ -31,9 +31,9 @@ public class AuthController {
     @Transactional
     @PostMapping("/register")
     public HttpEntity<?> register(@RequestBody RegisterDto registerDto) {
-        String email=authService.register(registerDto);
+        String userName=authService.register(registerDto);
         return ResponseEntity.ok(
-                Response.builder().message("Token").data("Bearer " + jwtUtil.generateToken(email)).build()
+                Response.builder().message("Token").data("Bearer " + jwtUtil.generateToken(userName)).build()
         );
     }
 
@@ -42,9 +42,9 @@ public class AuthController {
     @SneakyThrows
     @PostMapping("/login")
     public HttpEntity<?> login(@RequestBody LoginDto loginDto) {
-        String email=authService.login(loginDto);
+        String userName=authService.login(loginDto);
         return ResponseEntity.ok(
-                Response.builder().message("Token").data("Bearer " + jwtUtil.generateToken(email)).build()
+                Response.builder().message("Token").data("Bearer " + jwtUtil.generateToken(userName)).build()
         );
     }
 
@@ -53,9 +53,9 @@ public class AuthController {
     @SneakyThrows
     @PostMapping("/changePassword")
     public HttpEntity<?> changePassword(@RequestBody ChangePasswordDto changePasswordDto){
-        String email = authService.changePassword(changePasswordDto);
+        String userName = authService.changePassword(changePasswordDto);
         return ResponseEntity.ok(
-                Response.builder().message("Password changed successfully").data(email).build()
+                Response.builder().message("Password changed successfully").data(userName).build()
         );
     }
 }

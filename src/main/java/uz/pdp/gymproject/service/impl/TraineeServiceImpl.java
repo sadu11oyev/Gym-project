@@ -42,14 +42,14 @@ public class TraineeServiceImpl implements TraineeService {
 
     @Override
     public String saveTrainee(TraineeDto traineeDto) {
-        String email = authService.register(traineeDto.getRegisterDto());
-        User user = userRepository.findByEmail(email);
+        String userName = authService.register(traineeDto.getRegisterDto());
+        User user = userRepository.findByUsername(userName);
         Role roleUser = roleRepository.findByRoleName(RoleName.ROLE_TRAINEE.name());
         user.setRoles(List.of(roleUser));
         Trainee entity = traineeMapper.toEntity(traineeDto);
         entity.setUser(user);
         traineeRepository.save(entity);
-        return "Email: "+traineeDto.getRegisterDto().email()+" Password: "+traineeDto.getRegisterDto().password();
+        return "Email: "+traineeDto.getRegisterDto().userName()+" Password: "+traineeDto.getRegisterDto().password();
     }
 
     @Override
@@ -72,7 +72,7 @@ public class TraineeServiceImpl implements TraineeService {
 
     @Override
     public TraineeUpdateResDto getUpdateTraineeProfile(TraineeReqDto traineeReqDto) {
-        User user = userRepository.findByEmail(traineeReqDto.getGmail());
+        User user = userRepository.findByUsername(traineeReqDto.getUserName());
         user.setFirstName(traineeReqDto.getFirstName());
         user.setLastName(traineeReqDto.getLastName());
         user.setPhone(traineeReqDto.getNumber());
@@ -85,24 +85,24 @@ public class TraineeServiceImpl implements TraineeService {
         traineeRepository.save(trainee);
         return TraineeUpdateResDto.builder()
                 .traineeResDto(getTraineeProfile(user))
-                .gmail(user.getEmail())
+                .userName(user.getUsername())
                 .build();
     }
 
     @Override
-    public String deleteTrainee(String email) {
-        User user = userRepository.findByEmail(email);
+    public String deleteTrainee(String userName) {
+        User user = userRepository.findByUsername(userName);
         user.setIsActive(false);
         userRepository.save(user);
-        return user.getEmail();
+        return user.getUsername();
     }
 
     @Override
     public List<CoachResDto> updateCoachList(UpdateCoachList updateCoachList) {
-        Trainee trainee = traineeRepository.findByUserId(userRepository.findByEmail(updateCoachList.getEmail()).getId());
+        Trainee trainee = traineeRepository.findByUserId(userRepository.findByUsername(updateCoachList.getUserName()).getId());
         List<CoachResDto> coachResDtos = new ArrayList<>();
-        for (String coachEmail : updateCoachList.getCoachEmailList()) {
-            Coach coach = coachRepository.findByUserId(userRepository.findByEmail(coachEmail).getId());
+        for (String coachUserName : updateCoachList.getCoachUserNameList()) {
+            Coach coach = coachRepository.findByUserId(userRepository.findByUsername(coachUserName).getId());
             traineeCoachService.saveTraineeCoach(trainee,coach);
             coachResDtos.add(coachService.generateCoachResDto(coach));
         }
@@ -111,9 +111,9 @@ public class TraineeServiceImpl implements TraineeService {
 
     @Override
     public TraineeTrainingResDto getTrainingList(TraineeTrainingDto traineeTrainingDto) {
-        Coach coach = coachRepository.findByUserId(userRepository.findByEmail(traineeTrainingDto.getCoachEmail()).getId());
+        Coach coach = coachRepository.findByUserId(userRepository.findByUsername(traineeTrainingDto.getCoachUserName()).getId());
         TrainingType trainingType = traineeRepository.findByName(traineeTrainingDto.getSpecialization());
-        Trainee trainee = traineeRepository.findByUserId(userRepository.findByEmail(traineeTrainingDto.getCoachEmail()).getId());
+        Trainee trainee = traineeRepository.findByUserId(userRepository.findByUsername(traineeTrainingDto.getCoachUserName()).getId());
         Optional<Training> opt = trainingRepository.findByAllReferences(coach.getId(),trainingType.getId(),trainee.getId(),traineeTrainingDto.getFrom(),traineeTrainingDto.getTo());
         if (opt.isPresent()){
             Training training = opt.get();
@@ -130,8 +130,8 @@ public class TraineeServiceImpl implements TraineeService {
 
     @Override
     public String addTraining(AddTrainingReqDto addTrainingReqDto) {
-        Trainee trainee = traineeRepository.findByUserId(userRepository.findByEmail(addTrainingReqDto.getTraineeUserName()).getId());
-        Coach coach = coachRepository.findByUserId(userRepository.findByEmail(addTrainingReqDto.getCoachUserName()).getId());
+        Trainee trainee = traineeRepository.findByUserId(userRepository.findByUsername(addTrainingReqDto.getTraineeUserName()).getId());
+        Coach coach = coachRepository.findByUserId(userRepository.findByUsername(addTrainingReqDto.getCoachUserName()).getId());
         TraineeCoach traineeCoach = TraineeCoach.builder()
                 .coach(coach)
                 .trainee(trainee)

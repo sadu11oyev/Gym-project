@@ -10,6 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateCoachList {
-    private String email;
-    private List<String> coachEmailList;
+    private String userName;
+    private List<String> coachUserNameList;
 }

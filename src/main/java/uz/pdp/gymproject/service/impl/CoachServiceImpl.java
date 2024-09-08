@@ -37,8 +37,8 @@ public class CoachServiceImpl implements CoachService {
 
     @Override
     public String save(CoachDto coachDto) {
-        String email = authService.register(coachDto.getRegisterDto());
-        User user = userRepository.findByEmail(email);
+        String userName = authService.register(coachDto.getRegisterDto());
+        User user = userRepository.findByUsername(userName);
         Role roleName = roleRepository.findByRoleName(RoleName.ROLE_COACH.name());
         user.setRoles(List.of(roleName));
         TrainingType trainingType = trainingTypeMapper.toEntity(coachDto.getTrainingTypeDto());
@@ -47,7 +47,7 @@ public class CoachServiceImpl implements CoachService {
         newCoach.setTrainingType(trainingType);
         newCoach.setUser(user);
         coachRepository.save(newCoach);
-        return "Email:"+newCoach.getUser().getEmail()+" Password: "+ coachDto.getRegisterDto().password();
+        return "Email:"+newCoach.getUser().getUsername()+" Password: "+ coachDto.getRegisterDto().password();
     }
 
     @Override
@@ -55,7 +55,7 @@ public class CoachServiceImpl implements CoachService {
         Coach coach = coachRepository.findByUserId(user.getId());
         String specialization = trainingTypeRepository.findById(coach.getTrainingType().getId()).get().getName();
         CoachResDto coachResDto = CoachResDto.builder()
-                .gmail(user.getEmail())
+                .userName(user.getUsername())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .specializations(specialization)
@@ -64,7 +64,7 @@ public class CoachServiceImpl implements CoachService {
         List<TraineeRes> traineeResList = traineeIdList.stream().map(traineeId->{
             User trainee = userRepository.findByTraieeIdIAndActive(traineeId);
             return TraineeRes.builder()
-                    .email(trainee.getEmail())
+                    .userName(trainee.getUsername())
                     .firstName(trainee.getFirstName())
                     .lastName(trainee.getLastName())
                     .build();
@@ -77,7 +77,7 @@ public class CoachServiceImpl implements CoachService {
 
     @Override
     public CoachResDto2 updateCoach(CoachUpdateReqDto coachUpdateReqDto) {
-        User currentUser = userRepository.findByEmail(coachUpdateReqDto.getCoachResDto().getGmail());
+        User currentUser = userRepository.findByUsername(coachUpdateReqDto.getCoachResDto().getUserName());
         currentUser.setFirstName(coachUpdateReqDto.getCoachResDto().getFirstName());
         currentUser.setLastName(coachUpdateReqDto.getCoachResDto().getLastName());
         currentUser.setIsActive(coachUpdateReqDto.getIsActive());
@@ -92,7 +92,7 @@ public class CoachServiceImpl implements CoachService {
     @Override
     public CoachResDto generateCoachResDto(Coach coach) {
         return CoachResDto.builder()
-                .gmail(coach.getUser().getEmail())
+                .userName(coach.getUser().getUsername())
                 .firstName(coach.getUser().getFirstName())
                 .lastName(coach.getUser().getLastName())
                 .specializations(coachRepository.findSpecializations(coach.getId()))

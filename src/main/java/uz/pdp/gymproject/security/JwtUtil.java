@@ -21,13 +21,13 @@ import java.util.stream.Collectors;
 public class JwtUtil {
     private final CustomUserDetailService customUserDetailService;
 
-    public String generateToken(String email) {
-        UserDetails userDetails = customUserDetailService.loadUserByUsername(email);
+    public String generateToken(String userName) {
+        UserDetails userDetails = customUserDetailService.loadUserByUsername(userName);
 
         String roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
         System.out.println(roles);
         String jwts = Jwts.builder()
-                .subject(email)
+                .subject(userName)
                 .issuer("gymproject.uz")
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7))//7 kun
@@ -55,7 +55,7 @@ public class JwtUtil {
         return true;
     }
 
-    public String getEmail(String token) {
+    public String getUserName(String token) {
         Claims claims = getClaims(token);
         return claims.getSubject();
     }

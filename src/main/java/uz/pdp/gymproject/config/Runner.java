@@ -25,7 +25,7 @@ public class Runner implements CommandLineRunner {
 //    private String ddl;
     @Override
     public void run(String... args) throws Exception {
-        generateAdmin();
+//        generateAdmin();
     }
     private void generateAdmin() throws IOException {
         Role roleAdmin = new Role(1, RoleName.ROLE_ADMIN);
@@ -37,7 +37,7 @@ public class Runner implements CommandLineRunner {
                 .firstName("Baxtiyor")
                 .lastName("Sadulloyev")
                 .phone("97 864 44 00")
-                .email("baxti@gmail.com")
+                .username("baxti@gmail.com")
                 .password(passwordEncoder.encode("root123"))
                 .isActive(true)
                 .roles(List.of(roleAdmin,roleCoach))

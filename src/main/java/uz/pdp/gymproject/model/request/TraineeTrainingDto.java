@@ -6,10 +6,10 @@ import java.time.LocalDate;
 
 @Data
 public class TraineeTrainingDto {
-    private String traineeEmail;
+    private String traineeUserName;
     private LocalDate from;
     private LocalDate to;
-    private String coachEmail;
+    private String coachUserName;
     private String specialization;
 
 }

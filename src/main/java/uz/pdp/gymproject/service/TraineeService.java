@@ -21,7 +21,7 @@ public interface TraineeService {
 
     TraineeUpdateResDto getUpdateTraineeProfile(TraineeReqDto traineeReqDto);
 
-    String deleteTrainee(String email);
+    String deleteTrainee(String userName);
 
     List<CoachResDto> updateCoachList(UpdateCoachList updateCoachList);
 

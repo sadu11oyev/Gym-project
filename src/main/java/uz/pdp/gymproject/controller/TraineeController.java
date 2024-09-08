@@ -42,9 +42,9 @@ public class TraineeController {
     }
 
     @DeleteMapping("delete")
-    public HttpEntity<?> deleteTrainee(@PathVariable String email){
+    public HttpEntity<?> deleteTrainee(@PathVariable String userName){
         return ResponseEntity.ok(
-                Response.builder().message("Delete trainee").data(traineeService.deleteTrainee(email)).build()
+                Response.builder().message("Delete trainee").data(traineeService.deleteTrainee(userName)).build()
         );
     }
 

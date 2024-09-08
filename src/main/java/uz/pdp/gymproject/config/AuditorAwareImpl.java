@@ -13,6 +13,6 @@ public class AuditorAwareImpl {
 
     public User getAuthenticatedUser() {
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userRepository.findByEmail(email);
+        return userRepository.findByUsername(email);
     }
 }

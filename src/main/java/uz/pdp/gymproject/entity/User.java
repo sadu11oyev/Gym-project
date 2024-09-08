@@ -27,7 +27,7 @@ public class User implements UserDetails {
     private String phone;
 
     @Column(unique = true)
-    private String email;
+    private String username;
     private String password;
     private Boolean isActive = true;
 
@@ -41,7 +41,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
 }

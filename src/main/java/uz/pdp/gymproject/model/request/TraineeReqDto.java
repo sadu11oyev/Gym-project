@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 @Data
 public class TraineeReqDto {
-    private String gmail;
+    private String userName;
     private String firstName;
     private String lastName;
     private LocalDate localDate;
