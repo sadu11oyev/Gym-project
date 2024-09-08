@@ -21,29 +21,30 @@ public class Runner implements CommandLineRunner {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Value("${spring.jpa.hibernate.ddl-auto}")
-    private String ddl;
+//    @Value("${spring.jpa.hibernate.ddl-auto}")
+//    private String ddl;
     @Override
     public void run(String... args) throws Exception {
         generateAdmin();
     }
     private void generateAdmin() throws IOException {
-        if (ddl.equals("create")){
-            Role roleAdmin = new Role(1, RoleName.ROLE_ADMIN);
-            Role roleCoach = new Role(2, RoleName.ROLE_COACH);
-            Role roleTrainee = new Role(3, RoleName.ROLE_TRAINEE);
-            roleRepository.saveAll(List.of(roleAdmin,roleCoach,roleTrainee));
+        Role roleAdmin = new Role(1, RoleName.ROLE_ADMIN);
+        Role roleCoach = new Role(2, RoleName.ROLE_COACH);
+        Role roleTrainee = new Role(3, RoleName.ROLE_TRAINEE);
+        roleRepository.saveAll(List.of(roleAdmin,roleCoach,roleTrainee));
 
-            User admin = User.builder()
-                    .firstName("Baxtiyor")
-                    .lastName("Sadulloyev")
-                    .phone("97 864 44 00")
-                    .email("baxti@gmail.com")
-                    .password(passwordEncoder.encode("root123"))
-                    .isActive(true)
-                    .roles(List.of(roleAdmin,roleCoach))
-                    .build();
-            userRepository.save(admin);
-        }
+        User admin = User.builder()
+                .firstName("Baxtiyor")
+                .lastName("Sadulloyev")
+                .phone("97 864 44 00")
+                .email("baxti@gmail.com")
+                .password(passwordEncoder.encode("root123"))
+                .isActive(true)
+                .roles(List.of(roleAdmin,roleCoach))
+                .build();
+        userRepository.save(admin);
+//        if (ddl.equals("create")){
+//
+//        }
     }
 }
