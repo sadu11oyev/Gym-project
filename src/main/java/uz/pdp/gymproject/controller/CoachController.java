@@ -5,15 +5,10 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.gymproject.config.AuditorAwareImpl;
-import uz.pdp.gymproject.dto.CoachDto;
-import uz.pdp.gymproject.dto.TrainingTypeDto;
 import uz.pdp.gymproject.model.request.CoachUpdateReqDto;
 import uz.pdp.gymproject.model.response.dto.CoachResDto2;
 import uz.pdp.gymproject.response.Response;
 import uz.pdp.gymproject.service.CoachService;
-import uz.pdp.gymproject.service.TrainingTypeService;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

@@ -6,18 +6,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import uz.pdp.gymproject.dto.ChangePasswordDto;
 import uz.pdp.gymproject.dto.LoginDto;
 import uz.pdp.gymproject.dto.RegisterDto;
-import uz.pdp.gymproject.dto.TraineeDto;
-import uz.pdp.gymproject.entity.User;
 import uz.pdp.gymproject.response.Response;
 import uz.pdp.gymproject.security.JwtUtil;
 import uz.pdp.gymproject.service.AuthService;
-import uz.pdp.gymproject.service.DATA;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
