@@ -7,9 +7,4 @@ import uz.pdp.gymproject.entity.User;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserLoginMapper {
     User toEntity(LoginDto loginDto);
-
-    LoginDto toDto(User user);
-
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    User partialUpdate(LoginDto loginDto, @MappingTarget User user);
 }
