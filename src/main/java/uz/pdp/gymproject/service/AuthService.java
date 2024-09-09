@@ -13,14 +13,12 @@ import uz.pdp.gymproject.dto.RegisterDto;
 import uz.pdp.gymproject.entity.User;
 import uz.pdp.gymproject.mappers.UserLoginMapper;
 import uz.pdp.gymproject.mappers.UserRegisterMapper;
-import uz.pdp.gymproject.repo.RoleRepository;
 import uz.pdp.gymproject.repo.UserRepository;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService {
     private final UserRegisterMapper userRegisterMapper;
-    private final RoleRepository roleRepository;
     private final UserRepository userRepository;
     private final UserLoginMapper userLoginMapper;
     private final AuthenticationManager authenticationManager;

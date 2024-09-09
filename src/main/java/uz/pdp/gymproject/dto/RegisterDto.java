@@ -8,5 +8,9 @@ import java.io.Serializable;
 /**
  * DTO for {@link uz.pdp.gymproject.entity.User}
  */
-public record RegisterDto(String firstName, String lastName, String phone, @NotNull @NotEmpty String userName, @NotNull @NotEmpty String password) implements Serializable {
+public record RegisterDto(String firstName,
+                          String lastName,
+                          String phone,
+                          @NotNull @NotEmpty String userName,
+                          @NotNull @NotEmpty String password) implements Serializable {
 }
